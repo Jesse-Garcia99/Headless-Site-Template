@@ -1,0 +1,37 @@
+{
+  "title": "Contact Us",
+  "slug": "contact",
+  "description": "Have a question or want to get in touch? Fill out the form below and we'll get back to you soon.",
+  "successMessage": "Thanks for reaching out! We'll be in touch within 1–2 business days.",
+  "submitLabel": "Send Message",
+  "fields": [
+    {
+      "name": "name",
+      "label": "Your Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Jane Smith"
+    },
+    {
+      "name": "email",
+      "label": "Email Address",
+      "type": "email",
+      "required": true,
+      "placeholder": "jane@example.com"
+    },
+    {
+      "name": "subject",
+      "label": "Subject",
+      "type": "select",
+      "required": true,
+      "options": "General Inquiry,Partnership,Press,Other"
+    },
+    {
+      "name": "message",
+      "label": "Message",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "How can we help you?"
+    }
+  ]
+}
