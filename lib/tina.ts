@@ -19,8 +19,8 @@ export async function getAllPageSlugs(): Promise<string[]> {
   try {
     const res = await client.queries.pageConnection();
     const slugs = (res.data.pageConnection.edges ?? [])
-      .map((edge: { node?: { slug?: string } | null }) => edge?.node?.slug)
-      .filter((slug: string | undefined): slug is string => Boolean(slug));
+      .map((edge) => edge?.node?.slug)
+      .filter((slug): slug is string => typeof slug === "string");
     if (slugs.length > 0) return slugs;
   } catch {
     // fall through to filesystem fallback

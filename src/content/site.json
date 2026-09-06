@@ -1,9 +1,14 @@
 {
-  "title": "Welcome to your Headless Site",
-  "description": "Edit this content in the TinaCMS visual editor at /admin/",
-  "siteUrl": "https://example.com",
+  "title": "Headless",
+  "description": "A public field guide for turning an AI-assisted first draft into a fast, accessible, searchable site.",
+  "siteUrl": "https://headless.mojave.studio",
   "socialImage": "/social-card.svg",
   "favicon": "/favicon.svg",
+  "navigation": [
+    { "label": "Guide", "url": "/guide/" },
+    { "label": "Skills", "url": "/skills/" },
+    { "label": "GitHub", "url": "https://github.com/mojavestudio/AISite" }
+  ],
   "localBusiness": {
     "enabled": false,
     "name": "",

@@ -1,6 +1,6 @@
 # Headless Site Template
 
-A minimal boilerplate for building a **Next.js + TinaCMS** site deployed to **Cloudflare Pages**.
+A public-ready **Next.js + TinaCMS** starter, deployed as static assets through a **Cloudflare Worker**.
 
 ## What this template includes
 
@@ -8,8 +8,8 @@ A minimal boilerplate for building a **Next.js + TinaCMS** site deployed to **Cl
 - TinaCMS for content management
 - Visual editing (click-to-edit on the live site)
 - Static HTML export (`output: "export"`)
-- Cloudflare Pages deployment via Git integration
-- GitHub Actions CI for build verification
+- Cloudflare Worker deployment with static assets, a custom domain, and security headers
+- Cloudflare Pages deployment from GitHub Actions, plus CI verification
 - SEO and accessibility guardrails: canonical metadata, Open Graph/Twitter cards,
   robots.txt, sitemap.xml, a 404 page, optional LocalBusiness JSON-LD, and a
   post-build audit for metadata and image alt text
@@ -25,7 +25,7 @@ the first production deployment:
 4. `localBusiness`: turn this on and complete only when the business serves a
    local area and its contact/address details are public.
 
-Then attach the custom domain in Cloudflare Pages, submit
+Then deploy the Worker to attach the custom domain, submit
 `https://your-domain/sitemap.xml` to Google Search Console, and resolve any
 DNS or indexing issues there. These account-level steps deliberately cannot be
 automated from the repository.
@@ -33,6 +33,23 @@ automated from the repository.
 `AGENTS.md` is the standing maintenance contract: agents must make safe,
 in-scope SEO, accessibility, metadata, and console-error fixes as part of any
 related work, then run the build and SEO audit.
+
+## Content pages and forms
+
+The `page` collection is now a complete public-page model: every document in
+`src/content/pages/` is statically rendered at `/<slug>/`, has page-specific
+metadata, and is included in the sitemap unless **Keep this page out of search
+results** is selected in Tina. Its sections are rendered from the same Tina
+data used by the visual editor.
+
+The included `src/content/pages/about.json` is a working example at `/about/`.
+Use it as a content-model reference, then replace it with your own page.
+
+This is a static Cloudflare Worker template. Do not rely on the sample Next API
+routes for form delivery in production; static exports do not run them. Set each
+form's **Form submission endpoint** to a secured external endpoint or a
+Cloudflare Worker URL. The UI refuses to claim a submission succeeded
+when that endpoint is absent.
 
 ## Prerequisites
 
@@ -102,53 +119,72 @@ In your page component (`components/TinaPage.tsx`), the `data-tina-field` attrib
 <h1 data-tina-field={tinaField(site, "title")}>{site.title}</h1>
 ```
 
-## Cloudflare Pages Setup
+## Cloudflare Worker setup
 
-### 1. Create a Pages project
+The static Next.js export is uploaded as Worker assets. The Worker in
+`worker/index.ts` adds security headers before returning those assets.
 
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com) → **Pages**
-2. Click **Create a project**
-3. Connect to your **GitHub** repository
-4. Under **Build settings**:
-   - **Build preset:** Next.js (static)
-   - **Build command:** `npm run build`
-   - **Build output directory:** `out`
-5. Add **environment variables** (same as `.env.local`):
+1. Authenticate Wrangler: `npx wrangler login`
+2. Add the Tina credentials in Cloudflare if visual editing is enabled:
    - `NEXT_PUBLIC_TINA_CLIENT_ID`
    - `TINA_TOKEN`
-   - `TINA_BRANCH` = `main`
-6. Click **Save and Deploy**
+   - `TINA_BRANCH=main`
+3. Confirm the domain in [`wrangler.jsonc`](./wrangler.jsonc) is correct.
+   This public example declares `headless.mojave.studio` as a Worker Custom
+   Domain.
+4. Deploy: `npm run worker:deploy`
 
-### 2. Important: build output directory
+Cloudflare creates the DNS record and certificate when it provisions an unused
+Custom Domain in an active zone. If the hostname already has a CNAME, remove or
+migrate that record before the first deploy.
 
-Because `next.config.mjs` uses `output: "export"`, Next.js generates static files into an `out/` folder. You **must** tell Pages to use `out` as the build output directory, not `.next`.
+### Local Worker preview
 
-### 3. Verify deployment
+Run `npm run worker:dev` to build with a local Tina server and serve the exact
+static `out/` directory through Wrangler. Use `npm run worker:check` to validate
+the Worker bundle without deploying it.
 
-Once deployed, your site is live at:
-- Site: `https://<project-name>.pages.dev`
-- Tina admin: `https://<project-name>.pages.dev/admin/`
+Once deployed, this example is live at `https://headless.mojave.studio/` and
+the Tina admin is at `https://headless.mojave.studio/admin/`.
+
+## Cloudflare Pages deployment from GitHub
+
+`headless-site-template.pages.dev` is a **Cloudflare Pages** hostname, not a
+GitHub Pages hostname. For a Git-integrated Pages project, Cloudflare builds
+and publishes automatically whenever `main` is pushed—no Cloudflare API token
+or deployment workflow belongs in this repository.
+
+In Cloudflare, connect the Pages project to this GitHub repository, set `main`
+as its production branch, use `npm run build` as the build command, and set
+`out` as the build output directory. Add the Tina environment variables in the
+**Cloudflare Pages** project settings if visual editing is enabled:
+
+- `NEXT_PUBLIC_TINA_CLIENT_ID`
+- `TINA_TOKEN`
+- `TINA_BRANCH=main`
+
+The repository's `public/_headers` file applies the release security headers to
+the Pages deployment. The GitHub Actions workflow remains verification-only.
 
 ## Architecture decisions
 
 ### Why `output: "export"`?
 
-Cloudflare Pages serves static files directly. `output: "export"` makes Next.js generate:
+`output: "export"` makes Next.js generate:
 - Static HTML for every page
 - `_next/static/` assets (CSS, JS)
 - Everything into the `out/` directory
 
-Pages then deploys `out/` as your site root. No server runtime needed.
+The Worker deploys `out/` as versioned static assets and applies a small set of
+security headers. No server-side Next.js runtime is needed.
 
-### Why no Workers?
+### Why a Worker with static assets?
 
-This template uses **Pages** (static hosting) instead of **Workers** (edge runtime). For a content-managed marketing site:
-- Pages is simpler and cheaper
-- No cold starts
-- Built-in Git integration
-- Tina's visual editor works the same way
+This keeps the static export simple while leaving a safe edge boundary for
+headers, future redirects, or small APIs. Cloudflare caches the assets globally
+and the Worker only adds response policy.
 
-If you need SSR or API routes later, you can migrate to Workers + `opennextjs-cloudflare`.
+If you need SSR later, migrate to an appropriate Next.js-on-Workers adapter.
 
 ### Visual editing flow
 
@@ -164,8 +200,10 @@ If you need SSR or API routes later, you can migrate to Workers + `opennextjs-cl
 ├── app/
 │   ├── layout.tsx          # Root layout
 │   └── page.tsx            # Homepage (Server Component)
+│   └── [slug]/page.tsx     # CMS pages, statically rendered from content/pages
 ├── components/
-│   └── TinaPage.tsx        # Client Component with useTina + tinaField
+│   ├── TinaPage.tsx        # Homepage visual editing
+│   └── TinaContentPage.tsx # CMS page visual editing and section renderer
 ├── lib/
 │   └── tina.ts             # Data fetching helpers
 ├── public/
@@ -177,6 +215,9 @@ If you need SSR or API routes later, you can migrate to Workers + `opennextjs-cl
 │   └── __generated__/      # Auto-generated (client.ts, types.ts)
 ├── .github/workflows/
 │   └── build.yml           # CI: build verification only
+├── worker/
+│   └── index.ts             # Static asset handler + security headers
+├── wrangler.jsonc           # Worker, assets, and Custom Domain configuration
 ├── next.config.mjs         # output: "export", trailingSlash: true
 └── README.md               # This file
 ```
@@ -185,11 +226,11 @@ If you need SSR or API routes later, you can migrate to Workers + `opennextjs-cl
 
 ### CSS returns 404 after deployment
 
-Pages is serving a cached build or the build output directory is wrong.
+The Worker may have been deployed before the static export completed.
 
-- Check Pages Settings → Build output directory = `out`
-- Trigger a new deployment from the dashboard
-- Purge Cloudflare cache if needed
+- Run `npm run worker:deploy` again
+- Confirm `wrangler.jsonc` still points at `./out`
+- Purge Cloudflare cache only after verifying the deployed Worker version
 
 ### Tina admin shows "Content Manager" only (no visual editor)
 
@@ -201,7 +242,7 @@ Pages is serving a cached build or the build output directory is wrong.
 ### "Failed: build output directory not found"
 
 - `next.config.mjs` must have `output: "export"`
-- Pages build settings must point to `out`
+- `wrangler.jsonc` must point `assets.directory` to `./out`
 
 ### Schema mismatch errors
 
@@ -222,5 +263,5 @@ Pages is serving a cached build or the build output directory is wrong.
 - [TinaCMS Docs](https://tina.io/docs/)
 - [Tina Visual Editing](https://tina.io/docs/contextual-editing/react)
 - [Tina tinaField](https://tina.io/docs/contextual-editing/tinafield)
-- [Cloudflare Pages](https://developers.cloudflare.com/pages/)
+- [Cloudflare Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
 - [Next.js Static Export](https://nextjs.org/docs/app/building-your-application/deploying/static-exports)

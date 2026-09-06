@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "headless-mojave-studio",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-06",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "headless.mojave.studio", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
+  }
+}

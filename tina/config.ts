@@ -132,6 +132,7 @@ export default defineConfig({
             label: "Meta description",
             ui: { component: "textarea" },
           },
+          { type: "boolean", name: "noIndex", label: "Keep this page out of search results", description: "Use for campaign, thank-you, or utility pages only" },
           {
             type: "object",
             name: "hero",
@@ -191,6 +192,12 @@ export default defineConfig({
             type: "string",
             name: "submitLabel",
             label: "Submit button label",
+          },
+          {
+            type: "string",
+            name: "submissionEndpoint",
+            label: "Form submission endpoint",
+            description: "Required in production. Use a secure external endpoint or a Cloudflare Pages Function URL.",
           },
           {
             type: "object",

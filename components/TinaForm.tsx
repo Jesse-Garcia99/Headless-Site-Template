@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface FormField {
   name: string;
@@ -17,39 +17,17 @@ interface FormData {
   description?: string;
   successMessage?: string;
   submitLabel?: string;
+  submissionEndpoint?: string;
   fields: FormField[];
 }
 
-interface TinaFormProps {
-  /** Pass a pre-loaded form object (SSR/SSG path). */
-  form?: FormData;
-  /** Pass a slug to fetch the form client-side via /api/forms/[slug]. */
-  formSlug?: string;
-}
+interface TinaFormProps { form: FormData; }
 
-export default function TinaForm({ form, formSlug }: TinaFormProps) {
-  const [formData, setFormData] = useState<FormData | null>(form ?? null);
-  const [isLoading, setIsLoading] = useState(!form && !!formSlug);
+export default function TinaForm({ form }: TinaFormProps) {
+  const formData = form;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    if (formSlug && !form) {
-      fetch(`/api/forms/${formSlug}`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Not found");
-          return res.json();
-        })
-        .then((data: FormData) => {
-          setFormData(data);
-          setIsLoading(false);
-        })
-        .catch(() => {
-          setIsLoading(false);
-        });
-    }
-  }, [formSlug, form]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,7 +39,7 @@ export default function TinaForm({ form, formSlug }: TinaFormProps) {
 
     // Client-side validation
     const newErrors: Record<string, string> = {};
-    formData?.fields.forEach((field) => {
+    formData.fields.forEach((field) => {
       if (field.required && !data[field.name]) {
         newErrors[field.name] = `${field.label} is required`;
       }
@@ -80,11 +58,17 @@ export default function TinaForm({ form, formSlug }: TinaFormProps) {
       return;
     }
 
+    if (!formData.submissionEndpoint) {
+      setErrors({ _form: "This form is not configured for submissions yet." });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const response = await fetch("/api/forms/submit", {
+      const response = await fetch(formData.submissionEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ formSlug: formData?.slug, data }),
+        body: JSON.stringify({ formSlug: formData.slug, data }),
       });
 
       if (response.ok) {
@@ -99,14 +83,6 @@ export default function TinaForm({ form, formSlug }: TinaFormProps) {
       setIsSubmitting(false);
     }
   };
-
-  if (isLoading) {
-    return <div className="tina-form__loading">Loading form…</div>;
-  }
-
-  if (!formData) {
-    return <div className="tina-form__not-found">Form not found.</div>;
-  }
 
   if (isSuccess) {
     return (

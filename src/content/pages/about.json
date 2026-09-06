@@ -1,0 +1,40 @@
+{
+  "title": "About",
+  "slug": "about",
+  "description": "Learn how this headless site template combines TinaCMS with fast static delivery.",
+  "noIndex": false,
+  "hero": {
+    "kicker": "Headless CMS",
+    "title": "Edit content without editing code",
+    "lede": "A static site can still give content editors a focused, visual publishing workflow."
+  },
+  "sections": [
+    {
+      "_template": "cards",
+      "title": "Built for practical publishing",
+      "cards": [
+        {
+          "title": "Visual editing",
+          "body": "Tina maps editable content directly to the rendered page."
+        },
+        {
+          "title": "Static delivery",
+          "body": "Every approved change is committed to Git and deployed as static output."
+        }
+      ]
+    },
+    {
+      "_template": "cta",
+      "title": "Ready to customize it?",
+      "body": "Create your own pages from the Tina admin, then replace this example with your real content.",
+      "buttons": [
+        {
+          "label": "Back home",
+          "url": "/",
+          "style": "primary",
+          "external": false
+        }
+      ]
+    }
+  ]
+}

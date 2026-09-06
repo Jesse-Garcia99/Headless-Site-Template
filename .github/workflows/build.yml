@@ -24,8 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Tina + Next.js
-        run: npm run build
+      - name: Build Tina + Next.js and type-check it
+        run: |
+          npm run build
+          npm run lint
 
       - name: Verify SEO and accessibility baseline
         run: npm run audit:seo
+
+      - name: Verify Cloudflare Worker bundle
+        run: npm run worker:check
