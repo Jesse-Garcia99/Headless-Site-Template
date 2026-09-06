@@ -45,6 +45,23 @@ export default defineConfig({
             label: "Site Description",
             ui: { component: "textarea" },
           },
+          { type: "string", name: "siteUrl", label: "Production site URL", required: true, description: "HTTPS custom domain, without a trailing slash" },
+          { type: "string", name: "socialImage", label: "Social share image", required: true, description: "Public path, e.g. /social-card.png (1200 × 630 recommended)" },
+          { type: "string", name: "favicon", label: "Favicon", required: true, description: "Public path, e.g. /favicon.svg" },
+          {
+            type: "object", name: "localBusiness", label: "Local business structured data",
+            fields: [
+              { type: "boolean", name: "enabled", label: "Publish LocalBusiness schema" },
+              { type: "string", name: "name", label: "Business name" },
+              { type: "string", name: "telephone", label: "Telephone" },
+              { type: "string", name: "email", label: "Email" },
+              { type: "string", name: "streetAddress", label: "Street address" },
+              { type: "string", name: "addressLocality", label: "City / locality" },
+              { type: "string", name: "addressRegion", label: "State / region" },
+              { type: "string", name: "postalCode", label: "Postal code" },
+              { type: "string", name: "addressCountry", label: "Country code" },
+            ],
+          },
           {
             type: "object",
             name: "contact",

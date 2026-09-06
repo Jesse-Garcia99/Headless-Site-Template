@@ -10,6 +10,29 @@ A minimal boilerplate for building a **Next.js + TinaCMS** site deployed to **Cl
 - Static HTML export (`output: "export"`)
 - Cloudflare Pages deployment via Git integration
 - GitHub Actions CI for build verification
+- SEO and accessibility guardrails: canonical metadata, Open Graph/Twitter cards,
+  robots.txt, sitemap.xml, a 404 page, optional LocalBusiness JSON-LD, and a
+  post-build audit for metadata and image alt text
+
+## Before launching
+
+Set these values in `src/content/site.json` (or Tina's **Site Settings**) before
+the first production deployment:
+
+1. `siteUrl`: the final HTTPS custom domain (for example, `https://example.com`)
+2. `socialImage`: a real 1200 × 630 share image in `public/`
+3. `favicon`: the favicon's public path
+4. `localBusiness`: turn this on and complete only when the business serves a
+   local area and its contact/address details are public.
+
+Then attach the custom domain in Cloudflare Pages, submit
+`https://your-domain/sitemap.xml` to Google Search Console, and resolve any
+DNS or indexing issues there. These account-level steps deliberately cannot be
+automated from the repository.
+
+`AGENTS.md` is the standing maintenance contract: agents must make safe,
+in-scope SEO, accessibility, metadata, and console-error fixes as part of any
+related work, then run the build and SEO audit.
 
 ## Prerequisites
 

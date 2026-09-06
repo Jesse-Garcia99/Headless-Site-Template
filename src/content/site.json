@@ -1,4 +1,18 @@
 {
   "title": "Welcome to your Headless Site",
-  "description": "Edit this content in the TinaCMS visual editor at /admin/"
+  "description": "Edit this content in the TinaCMS visual editor at /admin/",
+  "siteUrl": "https://example.com",
+  "socialImage": "/social-card.svg",
+  "favicon": "/favicon.svg",
+  "localBusiness": {
+    "enabled": false,
+    "name": "",
+    "telephone": "",
+    "email": "",
+    "streetAddress": "",
+    "addressLocality": "",
+    "addressRegion": "",
+    "postalCode": "",
+    "addressCountry": ""
+  }
 }

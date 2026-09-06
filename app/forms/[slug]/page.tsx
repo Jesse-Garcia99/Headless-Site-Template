@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import TinaForm from "@/components/TinaForm";
 
 const formsDir = path.join(process.cwd(), "src", "content", "forms");
@@ -23,13 +24,15 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
-}) {
+}): Promise<Metadata> {
   const { slug } = await params;
   const form = getForm(slug);
   if (!form) return {};
   return {
     title: form.title,
     description: form.description ?? undefined,
+    alternates: { canonical: `/forms/${slug}/` },
+    robots: { index: false, follow: true },
   };
 }
 

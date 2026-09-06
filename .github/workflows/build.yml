@@ -26,3 +26,6 @@ jobs:
 
       - name: Build Tina + Next.js
         run: npm run build
+
+      - name: Verify SEO and accessibility baseline
+        run: npm run audit:seo
