@@ -32,5 +32,8 @@ jobs:
       - name: Verify SEO and accessibility baseline
         run: npm run audit:seo
 
+      - name: Verify agent discovery baseline
+        run: npm run audit:discovery
+
       - name: Verify Cloudflare Worker bundle
         run: npm run worker:check

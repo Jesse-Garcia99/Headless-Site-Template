@@ -13,6 +13,10 @@ A public-ready **Next.js + TinaCMS** starter, deployed as static assets through 
 - SEO and accessibility guardrails: canonical metadata, Open Graph/Twitter cards,
   robots.txt, sitemap.xml, a 404 page, optional LocalBusiness JSON-LD, and a
   post-build audit for metadata and image alt text
+- Agent-ready delivery: Content Signals, `llms.txt`, and Markdown content
+  negotiation for requests that send `Accept: text/markdown`
+- An optional agent discovery surface (`.well-known/agent-card.json`,
+  `openapi.json`, and related documents), disabled until you configure it
 
 ## Before launching
 
@@ -33,6 +37,22 @@ automated from the repository.
 `AGENTS.md` is the standing maintenance contract: agents must make safe,
 in-scope SEO, accessibility, metadata, and console-error fixes as part of any
 related work, then run the build and SEO audit.
+
+The accompanying [agent operations guide](./docs/agent-operations.md) explains
+the one-time launch setup and the checks agents must perform when they add
+routes, change public content, or modify the Worker.
+
+### Agent discovery surface
+
+Set the `discovery` key in `src/content/site.json` to publish well-known
+documents (agent card, OpenAPI, API catalog, agent skills, MCP server card)
+that tell automated agents what the site can actually do. It ships empty; a
+document is only generated for a section you fill in, and `npm run
+audit:discovery` checks the result after `npm run build`. See the
+[agent operations guide](./docs/agent-operations.md#agent-discovery-surface)
+for what each document is, what's generated vs. hand-authored, and which
+protocols (OAuth/OIDC discovery, commerce protocols like ACP/UCP/x402) are
+out of scope for a static site.
 
 ## Content pages and forms
 
@@ -176,7 +196,10 @@ the Pages deployment. The GitHub Actions workflow remains verification-only.
 - Everything into the `out/` directory
 
 The Worker deploys `out/` as versioned static assets and applies a small set of
-security headers. No server-side Next.js runtime is needed.
+security headers. It also appends the Content Signals policy to `robots.txt`
+and response headers, and returns a clean Markdown representation of the same
+page when a request includes `Accept: text/markdown`. No server-side Next.js
+runtime is needed.
 
 ### Why a Worker with static assets?
 

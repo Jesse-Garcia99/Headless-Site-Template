@@ -19,5 +19,27 @@
     "addressRegion": "",
     "postalCode": "",
     "addressCountry": ""
+  },
+  "discovery": {
+    "apiCatalog": {
+      "enabled": false,
+      "entries": []
+    },
+    "openapi": {
+      "enabled": false,
+      "spec": null
+    },
+    "agentCard": {
+      "enabled": false,
+      "card": null
+    },
+    "agentSkills": {
+      "enabled": false,
+      "skills": []
+    },
+    "mcp": {
+      "enabled": false,
+      "card": null
+    }
   }
 }

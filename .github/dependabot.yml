@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Repo pins node >=22.22.0 (see package.json "engines") — dependency
+    # updates should stay compatible with that floor.
+    groups:
+      npm-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    # Major bumps are left out of the group above so they open as their own,
+    # individually reviewable PRs.
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions-minor-patch:
+        update-types:
+          - "minor"
+          - "patch"

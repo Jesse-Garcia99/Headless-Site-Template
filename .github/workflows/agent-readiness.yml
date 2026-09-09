@@ -1,0 +1,40 @@
+name: Agent Readiness
+
+# Scans the DEPLOYED site (not this branch's build output) against
+# https://isitagentready.com and fails when an opted-in discovery check
+# regresses.
+#
+# IMPORTANT: on `pull_request`, this scans production, not the PR's changes.
+# A failure here may reflect the current state of production rather than
+# anything in the branch. A third-party outage on isitagentready.com will
+# also block merges — the job distinguishes "scanner unreachable" from an
+# actual site regression in its output, so a human can tell them apart.
+#
+# The job SKIPS cleanly (does not fail) when the `SITE_URL` repository
+# variable is unset, so a fresh fork with nothing deployed yet stays green.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * 1" # weekly, Monday 06:17 UTC
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    env:
+      # No hardcoded fallback to a specific domain (this is a public template
+      # other people fork) — an unset variable is handled as a clean skip in
+      # the script itself.
+      SITE_URL: ${{ vars.SITE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Scan deployed site for agent readiness
+        run: node .github/scripts/check-agent-readiness.mjs
