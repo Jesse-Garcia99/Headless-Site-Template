@@ -9,6 +9,7 @@ const LABEL = "launch";
 const HUMAN_LABEL = "human";
 
 const issues = [
+  ["Install agent tooling: impeccable + graphify", "Install the standard agent tools so every future task can use them:\n\n- `npm i -D impeccable` then `npx impeccable install` — design anti-pattern detection and skills for agents.\n- `uv tool install graphifyy` (once per machine) then `graphify update .` — builds `graphify-out/`, the codebase knowledge graph agents should query before raw file browsing. Add `graphify-out/` to `.gitignore` (regenerable artifact).\n\nDone when: `npx impeccable detect` runs and `graphify-out/graph.json` exists."],
   ["site.json production values", "Set `siteUrl` to the production HTTPS domain and fill in `socialImage`, `favicon`, brand details, and public contact details.\n\nDone when: `npm run audit:seo` passes the siteUrl check."],
   ["Unique titles and meta descriptions", "Every public page needs a unique title and unique description. Check `app/` routes and the metadata helpers.\n\nDone when: `npm run audit:seo` passes."],
   ["Canonicals and heading structure", "Every indexable page has a canonical URL (plus the full hreflang set if the site is localized) and exactly one descriptive `h1`.\n\nDone when: `npm run audit:seo` passes."],

@@ -37,6 +37,11 @@ labels: launch
 - [ ] Commerce docs (ACP, UCP, MPP `x-payment-info`, x402, AP2) — only for real payment flows
 - [ ] `npm run audit:discovery` green for whatever is enabled
 
+## Agent tooling — on project init
+
+- [ ] `impeccable` installed: `npm i -D impeccable` then `npx impeccable install` — design anti-pattern detection and skills for agents
+- [ ] `graphify` installed: `uv tool install graphifyy` then `graphify update .` — builds `graphify-out/`; add it to `.gitignore`
+
 ## Security — apply where the surface exists
 
 - [ ] No secrets in git history or tracked files; `.env`, `.dev.vars`, credentials gitignored
