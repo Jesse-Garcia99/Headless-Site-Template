@@ -12,7 +12,8 @@
     "build:local": "NODE_ENV=production tinacms build --local --skip-cloud-checks -c \"next build && node scripts/generate-agent-markdown.mjs && node scripts/generate-discovery.mjs\"",
     "worker:dev": "npm run build:local && wrangler dev",
     "worker:deploy": "npm run build && wrangler deploy",
-    "worker:check": "wrangler deploy --dry-run"
+    "worker:check": "wrangler deploy --dry-run",
+    "launch:issues": "node scripts/create-launch-issues.mjs"
   },
   "engines": {
     "node": ">=22.22.0"

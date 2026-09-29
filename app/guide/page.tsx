@@ -40,6 +40,20 @@ const buildChecks = [
   ["Small JS bundles", "Keep public JS lean. Admin tooling stays off the public pages."],
 ];
 
+const agentChecks = [
+  ["AI crawler rules", "robots.txt carries explicit User-agent groups (GPTBot, OAI-SearchBot, ClaudeBot, Claude-SearchBot, Google-Extended, PerplexityBot…) matching the site's AI policy — not just a wildcard."],
+  ["Content Signals", "The ai-train/search/ai-input policy is declared in robots.txt and sent as a Content-Signal response header."],
+  ["Markdown for agents", "Accept: text/markdown returns a generated Markdown counterpart with Vary: Accept. HTML stays the default for browsers."],
+  ["Link response headers", "The homepage returns RFC 8288 Link headers (api-catalog, service-desc, service-doc, describedby) when discovery documents exist."],
+  ["API catalog + OpenAPI", "Publish /.well-known/api-catalog (RFC 9727, application/linkset+json) and /openapi.json only when real API endpoints exist."],
+  ["auth.md + protected resource", "Publish /auth.md and /.well-known/oauth-protected-resource (RFC 9728) only when agent registration or auth actually exists."],
+  ["A2A agent card + skills index", "Publish /.well-known/agent-card.json and /.well-known/agent-skills/index.json (with sha256 digests) only when the site can act as an agent."],
+  ["MCP server card", "Publish /.well-known/mcp/server-card.json only when a real MCP endpoint is deployed and reachable."],
+  ["WebMCP tools", "Register navigator.modelContext tools only for actions the page can actually perform."],
+  ["DNS-AID records", "SVCB/HTTPS records under _agents — a human DNS step, only once agent endpoints are live."],
+  ["Commerce protocols", "ACP, UCP, MPP (x-payment-info), x402, AP2 — only for real payment flows, never to satisfy a scanner."],
+];
+
 export default function GuidePage() {
   return <>
     <a className="skip-link" href="#main-content">Skip to content</a>
@@ -56,6 +70,11 @@ export default function GuidePage() {
         <h2>On every production build</h2>
         <p className="page-intro">These ship with the template and are checked by <code>npm run audit:seo</code> after <code>npm run build</code>. Custom domain attachment still needs a human in Cloudflare.</p>
         <ol className="build-checks">{buildChecks.map(([title, body]) => <li key={title}><strong>{title}</strong><span>{body}</span></li>)}</ol>
+      </section>
+      <section className="build-check-block">
+        <h2>Agent readiness — only what is real</h2>
+        <p className="page-intro">Discovery documents tell agents what your site can do. Ship a document only when the thing it describes exists and works — a catalog for a real API, a card for a real agent, a payment extension for a real checkout. <code>npm run audit:discovery</code> verifies whatever you enable. Never publish one to satisfy a scanner.</p>
+        <ol className="build-checks">{agentChecks.map(([title, body]) => <li key={title}><strong>{title}</strong><span>{body}</span></li>)}</ol>
       </section>
       <section className="guide-cta"><h2>Want the standard in the prompt?</h2><p>Start with the public <code>create-site</code> skill, then make the project your own.</p><Link className="button button-primary" href="/skills/">Open skills <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" /></svg></Link></section>
     </main>
