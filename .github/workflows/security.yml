@@ -45,7 +45,7 @@ jobs:
       - name: Upload audit report on failure
         if: failure()
         run: npm audit --json > npm-audit-report.json || true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: npm-audit-report
