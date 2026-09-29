@@ -21,7 +21,8 @@ function visit(directory) {
 }
 visit(output);
 
-const is404 = file => file.endsWith("404.html") || file.includes("/404/");
+// Next's app-router export can also emit its not-found route as _not-found/.
+const is404 = file => file.endsWith("404.html") || file.includes("/404/") || file.includes("/_not-found/");
 const isHome = file => relative(output, file) === "index.html";
 const required = [/<title>[^<]+<\/title>/i, /<meta name="description" content="[^"]+"/i, /<link rel="canonical"/i];
 const seen = { titles: new Map(), descriptions: new Map(), canonicals: new Map() };
