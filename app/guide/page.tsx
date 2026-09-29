@@ -54,6 +54,17 @@ const agentChecks = [
   ["Commerce protocols", "ACP, UCP, MPP (x-payment-info), x402, AP2 — only for real payment flows, never to satisfy a scanner."],
 ];
 
+const securityChecks = [
+  ["Secrets sweep", "No secrets in git history or tracked files; .env and .dev.vars are gitignored."],
+  ["Dependency hygiene", "npm audit clean of high/critical vulnerabilities; unused packages removed."],
+  ["No debug or exposed files", "No debug mode or test endpoints in production; /.env, /.git, configs, backups 404."],
+  ["Security headers + scoped CORS", "CSP, HSTS, frame-ancestors, nosniff, Referrer-Policy on every response; Access-Control-Allow-Origin: * only on truly public assets."],
+  ["Input validation and XSS", "Forms and API inputs validated at the boundary; user content escaped; errors never leak internals."],
+  ["Rate limiting", "Every mutating or expensive endpoint returns 429 past its limit."],
+  ["Auth and access control", "Admin routes gated; per-resource authorization; passwords use a real KDF, never raw SHA-256; API keys server-side only."],
+  ["Parameterized database access", "No user input string-interpolated into SQL; least-privilege bindings."],
+];
+
 export default function GuidePage() {
   return <>
     <a className="skip-link" href="#main-content">Skip to content</a>
@@ -75,6 +86,11 @@ export default function GuidePage() {
         <h2>Agent readiness — only what is real</h2>
         <p className="page-intro">Discovery documents tell agents what your site can do. Ship a document only when the thing it describes exists and works — a catalog for a real API, a card for a real agent, a payment extension for a real checkout. <code>npm run audit:discovery</code> verifies whatever you enable. Never publish one to satisfy a scanner.</p>
         <ol className="build-checks">{agentChecks.map(([title, body]) => <li key={title}><strong>{title}</strong><span>{body}</span></li>)}</ol>
+      </section>
+      <section className="build-check-block">
+        <h2>Security — apply where the surface exists</h2>
+        <p className="page-intro">A static brochure has almost none of these surfaces; an app with auth, forms, and a database has all of them. Skip what doesn't apply — never bolt on a control for show.</p>
+        <ol className="build-checks">{securityChecks.map(([title, body]) => <li key={title}><strong>{title}</strong><span>{body}</span></li>)}</ol>
       </section>
       <section className="guide-cta"><h2>Want the standard in the prompt?</h2><p>Start with the public <code>create-site</code> skill, then make the project your own.</p><Link className="button button-primary" href="/skills/">Open skills <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" /></svg></Link></section>
     </main>

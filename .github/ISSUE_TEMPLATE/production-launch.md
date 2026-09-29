@@ -37,6 +37,23 @@ labels: launch
 - [ ] Commerce docs (ACP, UCP, MPP `x-payment-info`, x402, AP2) — only for real payment flows
 - [ ] `npm run audit:discovery` green for whatever is enabled
 
+## Security — apply where the surface exists
+
+- [ ] No secrets in git history or tracked files; `.env`, `.dev.vars`, credentials gitignored
+- [ ] Dependencies updated; `npm audit` clean of known vulnerabilities; unused packages removed
+- [ ] No debug mode, test endpoints, dev overlays, or source maps in production
+- [ ] No publicly exposed files: dotfiles, configs, backups, `.git`, `.env` return 404
+- [ ] Security headers on every response: CSP, HSTS, X-Frame-Options/frame-ancestors, nosniff, Referrer-Policy
+- [ ] Forms and API inputs validated at the trust boundary (types, lengths, honeypots); output escaped — no XSS
+- [ ] Rate limiting on every mutating/expensive endpoint (POST, auth, scans, sends)
+- [ ] CORS scoped: never `Access-Control-Allow-Origin: *` on authenticated or mutation endpoints
+- [ ] Admin routes protected (authenticated or absent from the public deploy)
+- [ ] Authentication real on protected routes; user-access rules enforced per resource, not just per route
+- [ ] Passwords/credentials hashed with a proper KDF (argon2/bcrypt/scrypt/PBKDF2) — never raw SHA-256 or plaintext
+- [ ] API keys and tokens only in server-side secrets; never shipped in the client bundle
+- [ ] Database access parameterized — no user input string-interpolated into SQL
+- [ ] Error responses don't leak internals (stack traces, schema names, tokens)
+
 ## Human steps — need provider/DNS access
 
 - [ ] Attach the custom domain in Cloudflare; set production `SITE_URL`

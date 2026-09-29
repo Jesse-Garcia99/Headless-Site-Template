@@ -105,4 +105,76 @@ if (existsSync(mcpCardPath)) {
   }
 }
 
+// --- oauth-protected-resource (RFC 9728) ---
+const prmPath = join(output, ".well-known/oauth-protected-resource");
+if (existsSync(prmPath)) {
+  checked++;
+  const doc = readJson(prmPath);
+  if (siteUrl && doc.resource && !String(doc.resource).startsWith(siteUrl)) {
+    throw new Error(`oauth-protected-resource "resource" is ${doc.resource}, expected ${siteUrl}`);
+  }
+  if (!Array.isArray(doc.authorization_servers) || !doc.authorization_servers.length) {
+    throw new Error("oauth-protected-resource is missing \"authorization_servers\"");
+  }
+  if (!doc.bearer_methods_supported?.includes("header")) {
+    throw new Error("oauth-protected-resource must list \"header\" in bearer_methods_supported");
+  }
+}
+
+// --- oauth-authorization-server / openid-configuration (RFC 8414 / OIDC) ---
+for (const name of ["oauth-authorization-server", "openid-configuration"]) {
+  const asPath = join(output, ".well-known", name);
+  if (!existsSync(asPath)) continue;
+  checked++;
+  const doc = readJson(asPath);
+  if (!doc.issuer) throw new Error(`.well-known/${name} is missing "issuer"`);
+  if (!doc.jwks_uri) throw new Error(`.well-known/${name} is missing "jwks_uri"`);
+  if (doc.agent_auth && (!doc.agent_auth.skill || !doc.agent_auth.register_uri || !doc.agent_auth.identity_types_supported?.length)) {
+    throw new Error(`.well-known/${name} agent_auth is missing "skill", "register_uri", or "identity_types_supported"`);
+  }
+}
+
+// --- auth.md ---
+const authMdPath = join(output, "auth.md");
+if (existsSync(authMdPath)) {
+  checked++;
+  const doc = readFileSync(authMdPath, "utf8");
+  if (!/^#\s.*auth\.md/mi.test(doc)) throw new Error("auth.md needs an H1 heading containing \"auth.md\"");
+}
+
+// --- ai-catalog.json (ARD) ---
+const aiCatalogPath = join(output, ".well-known/ai-catalog.json");
+if (existsSync(aiCatalogPath)) {
+  checked++;
+  const doc = readJson(aiCatalogPath);
+  if (!doc.specVersion) throw new Error("ai-catalog.json is missing \"specVersion\"");
+  if (!doc.host?.displayName || !doc.host?.identifier) throw new Error("ai-catalog.json host needs \"displayName\" and \"identifier\"");
+  if (!Array.isArray(doc.entries) || !doc.entries.length) throw new Error("ai-catalog.json has no \"entries\"");
+  for (const entry of doc.entries) {
+    for (const field of ["identifier", "displayName", "type"]) {
+      if (!entry[field]) throw new Error(`ai-catalog entry ${entry.url ?? "?"} is missing "${field}"`);
+    }
+    if ((entry.url ? 1 : 0) + (entry.data ? 1 : 0) !== 1) throw new Error(`ai-catalog entry "${entry.identifier}" must carry exactly one of "url" or "data"`);
+    if (entry.url) requireLocalFile(`ai-catalog entry ${entry.identifier}`, entry.url);
+  }
+}
+
+// --- commerce discovery docs (only validate shape when they exist) ---
+const acpPath = join(output, ".well-known/acp.json");
+if (existsSync(acpPath)) {
+  checked++;
+  const doc = readJson(acpPath);
+  if (doc.protocol?.name !== "acp" || !doc.protocol?.version) throw new Error("acp.json needs protocol.name \"acp\" and protocol.version");
+  if (!doc.api_base_url || !Array.isArray(doc.transports) || !doc.transports.length) throw new Error("acp.json needs \"api_base_url\" and a non-empty \"transports\" array");
+  if (!doc.capabilities?.services?.length) throw new Error("acp.json needs a non-empty \"capabilities.services\" array");
+}
+const ucpPath = join(output, ".well-known/ucp");
+if (existsSync(ucpPath)) {
+  checked++;
+  const doc = readJson(ucpPath);
+  for (const field of ["protocol_version", "services", "capabilities", "endpoints"]) {
+    if (!doc[field]) throw new Error(`.well-known/ucp is missing "${field}"`);
+  }
+}
+
 console.log(checked ? `Discovery audit passed for ${checked} document(s).` : "Discovery audit: nothing configured, nothing to validate.");
