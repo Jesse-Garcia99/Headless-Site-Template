@@ -11,6 +11,7 @@ const checks = [
   ["Name the job", "Give the agent a real audience, goal, and constraint. A generic prompt makes generic work."],
   ["Design the information", "Start with a page hierarchy and clear routes. Use real headings and links that a person or crawler can follow."],
   ["Build the smallest useful thing", "Avoid adding libraries, motion, or client-side state unless they earn their place."],
+  ["Localize only when the audience needs it", "Multi-language sites get `locales/` files, per-locale routes with the full hreflang set, localized titles and descriptions, and sitemap entries per locale. The Auto Translate workflow fills new strings once `OPENAI_API_KEY` is set. English-only sites skip all of it."],
   ["Make it public-ready", "Run the production build checklist below. `npm run audit:seo` fails the release if any automated item is missing."],
   ["Test the release", "Build the production output, check the console, inspect mobile, and make sure the 404, robots.txt, sitemap.xml, and forms behave honestly."],
 ];
@@ -26,6 +27,7 @@ const buildChecks = [
   ["Proper page sources", "No empty src, javascript:void, or hash-only primary links."],
   ["Unique headings", "Each page has exactly one descriptive h1."],
   ["Canonical tags", "Each indexable page has a unique canonical URL."],
+  ["Hreflang set when localized", "Only for multi-locale sites: every locale page carries the full hreflang cluster including x-default, plus localized title, description, and sitemap entry."],
   ["Structured data", "JSON-LD for the site, plus LocalBusiness when the business is local."],
   ["Unique page titles", "No two public pages share a title."],
   ["No console errors", "Production must not ship leftover debug logs or overlay errors."],

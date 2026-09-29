@@ -37,6 +37,14 @@ labels: launch
 - [ ] Commerce docs (ACP, UCP, MPP `x-payment-info`, x402, AP2) — only for real payment flows
 - [ ] `npm run audit:discovery` green for whatever is enabled
 
+## Localization — only if multi-language
+
+- [ ] `locales/en.json` source strings + one file per target locale
+- [ ] Localized routes (`/es/…`) render translated copy; missing keys fall back to English
+- [ ] Full hreflang cluster incl. `x-default`, localized title/description, canonical per locale
+- [ ] Every locale route in the sitemap
+- [ ] `OPENAI_API_KEY` secret set; Auto Translate workflow ran green
+
 ## Agent tooling — on project init
 
 - [ ] `impeccable` installed: `npm i -D impeccable` then `npx impeccable install` — design anti-pattern detection and skills for agents; install output stays gitignored (regenerable)
