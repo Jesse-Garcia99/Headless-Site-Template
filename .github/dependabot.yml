@@ -7,12 +7,25 @@ updates:
     # Repo pins node >=22.22.0 (see package.json "engines") — dependency
     # updates should stay compatible with that floor.
     groups:
+      # react and react-dom (and their types) must move together or npm ci
+      # fails on the peer mismatch, so they share one PR at every update type.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
       npm-minor-patch:
         update-types:
           - "minor"
           - "patch"
     # Major bumps are left out of the group above so they open as their own,
     # individually reviewable PRs.
+    ignore:
+      # TypeScript 7 breaks Next's "@/" path-alias resolution. Revisit once
+      # Next supports it.
+      - dependency-name: "typescript"
+        versions: [">=7"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
