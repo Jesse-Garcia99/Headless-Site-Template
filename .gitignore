@@ -22,3 +22,12 @@ public/admin/
 # IDE
 .vscode/
 .idea/
+
+# Agent tooling artifacts — regenerable (npx impeccable install / graphify update .), do not commit
+graphify-out/
+.impeccable/
+**/skills/impeccable/
+**/agents/impeccable-*
+**/hooks/impeccable.json
+.cursor/hooks.json
+.codex/hooks.json

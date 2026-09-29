@@ -39,8 +39,8 @@ labels: launch
 
 ## Agent tooling — on project init
 
-- [ ] `impeccable` installed: `npm i -D impeccable` then `npx impeccable install` — design anti-pattern detection and skills for agents
-- [ ] `graphify` installed: `uv tool install graphifyy` then `graphify update .` — builds `graphify-out/`; add it to `.gitignore`
+- [ ] `impeccable` installed: `npm i -D impeccable` then `npx impeccable install` — design anti-pattern detection and skills for agents; install output stays gitignored (regenerable)
+- [ ] `graphify` installed: `uv tool install graphifyy` then `graphify update .` — builds `graphify-out/`; gitignored (regenerable)
 
 ## Security — apply where the surface exists
 
