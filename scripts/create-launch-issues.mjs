@@ -44,6 +44,7 @@ const issues = [
   ["Search Console", "Submit the generated sitemap in Google Search Console and resolve reported indexing or DNS errors. Human step.", true],
   ["DNS-AID records", "Only once agent endpoints are live: publish SVCB/HTTPS records under the `_agents` namespace (e.g. `_a2a._agents.example.com`). Human DNS step.", true],
   ["Tina CMS credentials", "Configure Tina credentials for the deployed admin. Human step.", true],
+  ["CI variables and secrets", "Wire the repository variables/secrets the workflows consume:\n\n- `SITE_URL` (variable) — production origin; powers the agent-readiness scan and ZAP baseline. Agents can set it with `gh variable set SITE_URL --body https://example.com`.\n- `OPENAI_API_KEY` (secret) — optional; enables the Auto Translate workflow once `locales/` exists. Needs the key from a human.\n- `CI_RUNNER_LABELS` (variable) — optional; e.g. `[\"self-hosted\",\"zimacube\"]` to move jobs off GitHub-hosted runners.\n\nDone when: Build Verification, Security Audit, and Agent Readiness all run green on main.", true],
 ];
 
 function gh(args) {

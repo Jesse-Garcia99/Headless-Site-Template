@@ -1,0 +1,77 @@
+name: Auto Translate
+
+# Opt-in localization pipeline. Activates only when `locales/en.json` exists —
+# until then every run skips cleanly. Add the OPENAI_API_KEY secret and target
+# locale files (locales/es.json, locales/fr.json, ...) to enable; the job
+# translates only new/changed keys (delta via locales/source-map.json) and
+# commits the result back with [skip ci].
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "locales/en.json"
+  workflow_dispatch:
+    inputs:
+      force_translate:
+        description: "Re-translate all keys, not just new/changed"
+        required: false
+        default: "false"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  translate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS || '"ubuntu-latest"') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Skip when localization is not configured
+        id: gate
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ ! -f "locales/en.json" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "No locales/en.json — localization not configured, skipping."
+          elif [ -z "$OPENAI_API_KEY" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "OPENAI_API_KEY secret not set — skipping translation."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Translate locale files
+        if: steps.gate.outputs.skip == 'false'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+          FORCE_TRANSLATE: ${{ github.event.inputs.force_translate }}
+        run: node scripts/translate.mjs
+
+      - name: Commit translation updates
+        if: steps.gate.outputs.skip == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git status --porcelain | grep -q "locales/"; then
+            git add locales/
+            git commit -m "chore: update translations [skip ci]"
+            git pull --rebase origin main || true
+            git push origin main
+          else
+            echo "No translation changes to commit."
+          fi

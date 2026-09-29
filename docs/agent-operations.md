@@ -101,6 +101,7 @@ access, as a follow-up to this template, not part of it.
 
 - Preserve the Worker static asset binding and its `run_worker_first` configuration in `wrangler.jsonc`.
 - Keep the production custom domain, `SITE_URL`, Tina credentials, and form endpoint configuration outside source control.
+- CI workflows: `build.yml` gates every push/PR (build, typecheck, `audit:seo`, `audit:discovery`, worker bundle). `security.yml` runs gitleaks history scan + `npm audit` weekly and on push, plus a ZAP baseline against `vars.SITE_URL` when set. `agent-readiness.yml` scans the deployed site weekly via isitagentready.com. `translate.yml` is opt-in: it activates once `locales/en.json` exists and `OPENAI_API_KEY` is set, translating new/changed keys into sibling locale files via `scripts/translate.mjs` and committing them with `[skip ci]`. Set `CI_RUNNER_LABELS` (e.g. `["self-hosted","zimacube"]`) to move jobs to self-hosted runners.
 - Validate a deployed page with both representations:
 
   ```sh

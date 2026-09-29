@@ -59,6 +59,13 @@ labels: launch
 - [ ] Database access parameterized — no user input string-interpolated into SQL
 - [ ] Error responses don't leak internals (stack traces, schema names, tokens)
 
+## CI configuration
+
+- [ ] `SITE_URL` repo variable set — powers agent-readiness scan + ZAP baseline (`gh variable set`)
+- [ ] `OPENAI_API_KEY` secret set — only if the site adds `locales/` (Auto Translate)
+- [ ] `CI_RUNNER_LABELS` variable — optional, e.g. `["self-hosted","zimacube"]`
+- [ ] Build Verification, Security Audit, and Agent Readiness green on `main`
+
 ## Human steps — need provider/DNS access
 
 - [ ] Attach the custom domain in Cloudflare; set production `SITE_URL`
