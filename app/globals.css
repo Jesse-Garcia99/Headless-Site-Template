@@ -105,6 +105,12 @@ h1, h2, h3 { font-weight: 400; }
 .guide-cta code { color: inherit; }
 .guide-cta .button-primary { background: var(--ink); color: var(--paper); }
 .guide-cta .button-primary:hover { background: var(--paper); color: var(--ink); }
+.build-check-block { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 64px; }
+.build-check-block h2 { font-family: var(--display); font-size: clamp(2.4rem, 4vw, 4.2rem); letter-spacing: -.04em; line-height: .85; margin-bottom: 16px; text-transform: uppercase; }
+.build-checks { display: grid; gap: 0 48px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); list-style: none; margin: 36px 0 0; padding: 0; }
+.build-checks li { border-top: 1px solid var(--line); padding: 16px 0 18px; }
+.build-checks strong { display: block; font-size: .95rem; margin-bottom: 6px; }
+.build-checks span { color: oklch(0.86 0.02 95); font-size: .92rem; line-height: 1.45; }
 .skill-page-card { border-top: 2px solid var(--paper); display: grid; grid-template-columns: 1fr 1fr; margin-top: 78px; }
 .skill-page-card > div { padding: 34px 0; }
 .skill-page-card > div:first-child { border-bottom: 1px solid var(--line); grid-column: 1 / -1; }

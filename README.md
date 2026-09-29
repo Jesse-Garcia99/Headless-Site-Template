@@ -12,7 +12,9 @@ A public-ready **Next.js + TinaCMS** starter, deployed as static assets through 
 - Cloudflare Pages deployment from GitHub Actions, plus CI verification
 - SEO and accessibility guardrails: canonical metadata, Open Graph/Twitter cards,
   robots.txt, sitemap.xml, a 404 page, optional LocalBusiness JSON-LD, and a
-  post-build audit for metadata and image alt text
+  post-build audit for the production checklist (titles, descriptions, headings,
+  alt text, breadcrumbs, favicon, social image, llms.txt, no Vite overlay,
+  no source maps, no placeholder copy, internal links, JS budget)
 - Agent-ready delivery: Content Signals, `llms.txt`, and Markdown content
   negotiation for requests that send `Accept: text/markdown`
 - An optional agent discovery surface (`.well-known/agent-card.json`,

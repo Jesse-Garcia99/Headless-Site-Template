@@ -54,6 +54,7 @@ export default function TinaContentPage(props: { data: unknown; variables: unkno
   const sections = Array.isArray(page.sections) ? page.sections as ContentRecord[] : [];
 
   return <main>
+    <nav className="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>{string(page.title)}</span></nav>
     <header>
       <p>{string(hero.kicker)}</p>
       <h1 data-tina-field={tinaField(page, "title")}>{string(hero.title) || string(page.title)}</h1>

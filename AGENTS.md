@@ -2,7 +2,7 @@
 
 Every agent changing this site must leave its affected pages more complete than it found them. Make safe, in-scope updates directly rather than merely reporting obvious omissions.
 
-- Before shipping, run `npm run build`, `npm run audit:seo`, and `npm run audit:discovery`.
+- Before shipping, run `npm run build`, `npm run audit:seo`, and `npm run audit:discovery`. `audit:seo` is the production-build checklist (titles, descriptions, canonicals, headings, alt text, breadcrumbs, favicon, social image, robots, sitemap, llms.txt, 404, structured data, no Vite overlay, no source maps, no placeholder copy, internal links, JS budget). Custom domain attachment in Cloudflare remains a human step.
 - Keep `src/content/site.json` accurate: `siteUrl` must be the production HTTPS custom domain; set `socialImage`, `favicon`, and local-business details before launch.
 - Every indexable page needs one descriptive `h1`, a unique title and description, a canonical URL, and crawlable internal links. Use the shared metadata helpers rather than hand-writing tags.
 - Provide meaningful alt text for informative images. Decorative images must use an empty alt string deliberately.
