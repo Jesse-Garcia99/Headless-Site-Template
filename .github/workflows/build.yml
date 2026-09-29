@@ -10,8 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
-      TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
       NODE_OPTIONS: "--max-old-space-size=4096"
     steps:
       - uses: actions/checkout@v4
@@ -24,9 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Tina + Next.js and type-check it
+      # Verification builds against the repo's own content, so CI needs no
+      # Tina Cloud credentials. The deploy build still uses `npm run build`.
+      - name: Build Tina (local content) + Next.js and type-check it
         run: |
-          npm run build
+          npm run build:local
           npm run lint
 
       - name: Verify SEO and accessibility baseline

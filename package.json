@@ -31,5 +31,10 @@
     "@types/react-dom": "^18",
     "typescript": "^5",
     "wrangler": "^4.129.0"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "^8.5.28"
+    }
   }
 }
