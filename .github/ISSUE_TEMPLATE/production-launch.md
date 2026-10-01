@@ -26,6 +26,7 @@ labels: launch
 - [ ] Responsive at every breakpoint — `npm run audit:responsive` green: viewport meta, no unguarded fixed widths, tables/pre/images can't overflow; spot-check ~360px, ~768px, desktop
 - [ ] Accessibility: WCAG AA contrast, keyboard-only forms/controls with visible focus, clear descriptive button/link labels
 - [ ] Content integrity: no fake reviews, no unsupported claims, every image licensed or owned
+- [ ] Google Preferred Sources button — `<script async src="https://news.google.com/swg/js/v1/publisher.js">` in `<head>` + `<div google-add-preferred-source-btn></div>` placed where it should render (footer/sidebar); CSP allows `news.google.com` in script-src/connect-src/frame-src (news/blog sites)
 
 ## Policy pages & consent
 
@@ -62,6 +63,7 @@ labels: launch
 
 - [ ] `impeccable` installed: `npm i -D impeccable` then `npx impeccable install` — design anti-pattern detection and skills for agents; install output stays gitignored (regenerable)
 - [ ] `graphify` installed: `uv tool install graphifyy` then `graphify update .` — builds `graphify-out/`; gitignored (regenerable)
+- [ ] Accessibility tagging check enabled: `.github/workflows/accessibility.yml` ships with the template and runs `npm run audit:a11y` on every push/PR — keep it green (skip links, landmarks, accessible names, labels, heading order)
 
 ## Security — apply where the surface exists
 

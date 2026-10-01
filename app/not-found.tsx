@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function NotFound() {
-  return <main><h1>Page not found</h1><p>The page may have moved or the link is incorrect.</p><a href="/">Return home</a></main>;
+  return <><a className="skip-link" href="#main-content">Skip to content</a><main id="main-content"><h1>Page not found</h1><p>The page may have moved or the link is incorrect.</p><a href="/">Return home</a></main></>;
 }

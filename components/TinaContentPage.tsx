@@ -53,7 +53,9 @@ export default function TinaContentPage(props: { data: unknown; variables: unkno
   const hero = (page.hero ?? {}) as ContentRecord;
   const sections = Array.isArray(page.sections) ? page.sections as ContentRecord[] : [];
 
-  return <main>
+  return <>
+    <a className="skip-link" href="#main-content">Skip to content</a>
+    <main id="main-content">
     <nav className="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>{string(page.title)}</span></nav>
     <header>
       <p>{string(hero.kicker)}</p>
@@ -62,5 +64,6 @@ export default function TinaContentPage(props: { data: unknown; variables: unkno
       {string(hero.image) && <img src={string(hero.image)} alt={string(hero.imageAlt)} />}
     </header>
     {sections.map((section, index) => <Section key={`${string(section._template)}-${index}`} section={section} />)}
-  </main>;
+  </main>
+  </>;
 }

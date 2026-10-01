@@ -47,11 +47,14 @@ export default async function FormPage({
   if (!form) notFound();
 
   return (
-    <main style={{ maxWidth: "640px", margin: "0 auto", padding: "2rem" }}>
+    <>
+    <a className="skip-link" href="#main-content">Skip to content</a>
+    <main id="main-content" style={{ maxWidth: "640px", margin: "0 auto", padding: "2rem" }}>
       <nav className="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>{form.title}</span></nav>
       <h1>{form.title}</h1>
       {form.description && <p>{form.description}</p>}
       <TinaForm form={form} />
     </main>
+    </>
   );
 }
