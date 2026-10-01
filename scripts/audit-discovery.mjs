@@ -40,7 +40,6 @@ function requireLocalFile(name, pathname) {
 
 let checked = 0;
 
-// --- api-catalog ---
 const apiCatalogPath = join(output, ".well-known/api-catalog");
 if (existsSync(apiCatalogPath)) {
   checked++;
@@ -58,7 +57,6 @@ if (existsSync(apiCatalogPath)) {
   }
 }
 
-// --- openapi.json ---
 const openapiPath = join(output, "openapi.json");
 if (existsSync(openapiPath)) {
   checked++;
@@ -67,7 +65,6 @@ if (existsSync(openapiPath)) {
   if (!doc.info?.title || !doc.info?.version) throw new Error("openapi.json is missing \"info.title\" or \"info.version\"");
 }
 
-// --- agent-card.json ---
 const agentCardPath = join(output, ".well-known/agent-card.json");
 if (existsSync(agentCardPath)) {
   checked++;
@@ -77,7 +74,6 @@ if (existsSync(agentCardPath)) {
   }
 }
 
-// --- agent-skills/index.json ---
 const agentSkillsPath = join(output, ".well-known/agent-skills/index.json");
 if (existsSync(agentSkillsPath)) {
   checked++;
@@ -95,7 +91,6 @@ if (existsSync(agentSkillsPath)) {
   }
 }
 
-// --- mcp/server-card.json ---
 const mcpCardPath = join(output, ".well-known/mcp/server-card.json");
 if (existsSync(mcpCardPath)) {
   checked++;

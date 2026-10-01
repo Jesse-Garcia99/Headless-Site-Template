@@ -88,7 +88,6 @@ h1, h2, h3 { font-weight: 400; }
 .site-footer { align-items: end; display: flex; justify-content: space-between; padding-block: 36px 48px; }
 .site-footer p { color: var(--muted); font-family: var(--mono); font-size: .73rem; margin: 0; }
 
-/* Guide and skills */
 .compact-header { min-height: 78px; }
 .inner-page { max-width: 1040px; padding-block: 62px 130px; }
 .breadcrumbs { color: var(--muted); display: flex; font-family: var(--mono); font-size: .75rem; gap: 9px; margin-bottom: 76px; text-transform: uppercase; }

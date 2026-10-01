@@ -88,7 +88,6 @@ if (!agentSkills.enabled) {
   write(join(skillsDir, "index.json"), { $schema: "https://schemas.agentskills.io/discovery/0.2.0/schema.json", skills });
 }
 
-// --- mcp/server-card.json ---
 const mcp = discovery.mcp ?? {};
 if (!mcp.enabled) {
   skip("mcp/server-card.json", "discovery.mcp.enabled is false");
