@@ -129,7 +129,6 @@ for (const name of ["oauth-authorization-server", "openid-configuration"]) {
   }
 }
 
-// --- auth.md ---
 const authMdPath = join(output, "auth.md");
 if (existsSync(authMdPath)) {
   checked++;
@@ -137,7 +136,6 @@ if (existsSync(authMdPath)) {
   if (!/^#\s.*auth\.md/mi.test(doc)) throw new Error("auth.md needs an H1 heading containing \"auth.md\"");
 }
 
-// --- ai-catalog.json (ARD) ---
 const aiCatalogPath = join(output, ".well-known/ai-catalog.json");
 if (existsSync(aiCatalogPath)) {
   checked++;
@@ -154,7 +152,6 @@ if (existsSync(aiCatalogPath)) {
   }
 }
 
-// --- commerce discovery docs (only validate shape when they exist) ---
 const acpPath = join(output, ".well-known/acp.json");
 if (existsSync(acpPath)) {
   checked++;
