@@ -59,6 +59,15 @@ const widestGuard = rule => Math.max(0, ...rule.media.map(m => Number(
   m.match(/min-width\s*:\s*(\d+(?:\.\d+)?)px/i)?.[1] ?? m.match(/\(width\s*>=\s*(\d+(?:\.\d+)?)px/i)?.[1] ?? 0
 )));
 const covered = (rule, px) => widestGuard(rule) >= px;
+// A width capped by max-width in the same rule cannot overflow — accept a
+// percentage/fluid cap, or a px/rem cap at or below the mobile floor.
+const capped = (rule) =>
+  [...rule.body.matchAll(/(?:^|;)\s*max-width\s*:\s*([^;}]+)/gi)].some(m => {
+    const v = m[1].trim().toLowerCase();
+    if (/^\d+(?:\.\d+)?%$/.test(v) || /^(min|max|clamp|calc)\(/.test(v)) return true;
+    const cap = v.match(/^(\d+(?:\.\d+)?)(px|rem)\b/);
+    return cap ? Number(cap[1]) * (cap[2] === "rem" ? 16 : 1) <= MOBILE_FLOOR : false;
+  });
 const hasRule = (sel, decl) => rules.some(r => sel.test(r.selector) && decl.test(r.body));
 
 const violations = [];
@@ -68,7 +77,7 @@ for (const rule of rules) {
   if (rule.body.includes("px-ok")) continue;
   for (const m of rule.body.matchAll(/(?:^|;)\s*(min-width|width)\s*:\s*(\d+(?:\.\d+)?)(px|rem)\b/gi)) {
     const px = Number(m[2]) * (m[3].toLowerCase() === "rem" ? 16 : 1);
-    if (px > MOBILE_FLOOR && !covered(rule, px)) {
+    if (px > MOBILE_FLOOR && !covered(rule, px) && !capped(rule)) {
       violations.push(`${rule.source}: ${rule.selector} sets ${m[1]}:${m[2]}${m[3]} — overflows viewports under ~${px}px`);
     }
   }
@@ -77,7 +86,7 @@ for (const rule of rules) {
     const bare = grid[1].replace(/minmax\([^)]*\)/gi, "").replace(/repeat\(\s*\d+\s*,/gi, "");
     for (const m of bare.matchAll(/(\d+(?:\.\d+)?)(px|rem)\b/gi)) {
       const px = Number(m[1]) * (m[2].toLowerCase() === "rem" ? 16 : 1);
-      if (px > MOBILE_FLOOR && !covered(rule, px)) {
+      if (px > MOBILE_FLOOR && !covered(rule, px) && !capped(rule)) {
         violations.push(`${rule.source}: ${rule.selector} has a ~${px}px grid track — overflows viewports under ~${px}px`);
       }
     }
