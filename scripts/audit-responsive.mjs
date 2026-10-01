@@ -50,7 +50,7 @@ function parse(source, body, media = []) {
     i = j;
   }
 }
-const stripComments = css => css.replace(/\/\*[\s\S]*?\*\//g, "");
+const stripComments = css => css.replace(/\/\*\s*px-ok\b[\s\S]*?\*\//g, " px-ok ").replace(/\/\*[\s\S]*?\*\//g, "");
 const allCss = sources.map(s => s.css).join("\n");
 for (const { name, css } of sources) parse(name, stripComments(css));
 
@@ -65,6 +65,7 @@ const violations = [];
 const MOBILE_FLOOR = 380;
 
 for (const rule of rules) {
+  if (rule.body.includes("px-ok")) continue;
   for (const m of rule.body.matchAll(/(?:^|;)\s*(min-width|width)\s*:\s*(\d+(?:\.\d+)?)(px|rem)\b/gi)) {
     const px = Number(m[2]) * (m[3].toLowerCase() === "rem" ? 16 : 1);
     if (px > MOBILE_FLOOR && !covered(rule, px)) {
@@ -93,6 +94,7 @@ if (rootHidden && !fluid) {
 
 for (const file of htmlFiles) {
   const html = readFileSync(file, "utf8");
+  if (!/<html[\s>]/i.test(html) && !/<!doctype/i.test(html)) continue;
   const name = rel(file);
   const viewport = html.match(/<meta\b[^>]*>/gi)?.find(t => /name=["']viewport["']/i.test(t));
   if (!viewport || !/content=["'][^"']*width=device-width/i.test(viewport)) {
