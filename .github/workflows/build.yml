@@ -37,6 +37,9 @@ jobs:
       - name: Verify SEO and accessibility baseline
         run: npm run audit:seo
 
+      - name: Verify responsive breakpoints
+        run: npm run audit:responsive
+
       - name: Verify agent discovery baseline
         run: npm run audit:discovery
 

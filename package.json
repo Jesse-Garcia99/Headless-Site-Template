@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "tsc --noEmit",
     "audit:seo": "node scripts/audit-seo.mjs",
+    "audit:responsive": "node scripts/audit-responsive.mjs",
     "audit:discovery": "node scripts/audit-discovery.mjs",
     "build:local": "NODE_ENV=production tinacms build --local --skip-cloud-checks -c \"next build && node scripts/generate-agent-markdown.mjs && node scripts/generate-discovery.mjs\"",
     "worker:dev": "npm run build:local && wrangler dev",

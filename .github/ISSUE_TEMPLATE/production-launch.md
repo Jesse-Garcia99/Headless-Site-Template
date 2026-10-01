@@ -5,7 +5,7 @@ title: "Production launch checklist"
 labels: launch
 ---
 
-## Core — enforced by `npm run audit:seo`
+## Core — enforced by `npm run audit:seo` + `npm run audit:responsive`
 
 - [ ] `src/content/site.json` has the production HTTPS `siteUrl`, real `socialImage`, `favicon`, brand details
 - [ ] Unique title and meta description on every public page
@@ -23,6 +23,19 @@ labels: launch
 - [ ] No Vite/React overlay, source maps, placeholder copy, or console errors in production
 - [ ] Every internal link resolves; no empty, hash-only, or `javascript:` sources
 - [ ] Public JS under the bundle budget
+- [ ] Responsive at every breakpoint — `npm run audit:responsive` green: viewport meta, no unguarded fixed widths, tables/pre/images can't overflow; spot-check ~360px, ~768px, desktop
+- [ ] Accessibility: WCAG AA contrast, keyboard-only forms/controls with visible focus, clear descriptive button/link labels
+- [ ] Content integrity: no fake reviews, no unsupported claims, every image licensed or owned
+
+## Policy pages & consent
+
+- [ ] Privacy policy page — what you collect, retention, third parties, deletion path; linked from footer + every data-collection point
+- [ ] Terms of service page linked from footer + sitemap
+- [ ] Cookie policy page listing every cookie/storage item (name, purpose, lifetime), linked from footer + sitemap — even if the answer is "we set none"
+- [ ] Consent banner gating non-essential cookies until opt-in, with equal-weight Reject — only if the site sets any
+- [ ] Refund policy page stating terms plainly (incl. "all sales final" if that's the policy), linked from footer + checkout — only if the site takes payment
+- [ ] Forms collect only necessary data; consent captured where required; privacy policy linked at collection points; any tracking inventoried and consent-gated
+- [ ] Local laws for served jurisdictions checked — GDPR/ePrivacy, imprint/business details, consumer disclosures
 
 ## Agent readiness — enable only what's real
 
@@ -57,6 +70,7 @@ labels: launch
 - [ ] No debug mode, test endpoints, dev overlays, or source maps in production
 - [ ] No publicly exposed files: dotfiles, configs, backups, `.git`, `.env` return 404
 - [ ] Security headers on every response: CSP, HSTS, X-Frame-Options/frame-ancestors, nosniff, Referrer-Policy
+- [ ] Third-party embeds/scripts/fonts inventoried — each known, wanted, covered by CSP; cookie-setting embeds gated by consent
 - [ ] Forms and API inputs validated at the trust boundary (types, lengths, honeypots); output escaped — no XSS
 - [ ] Rate limiting on every mutating/expensive endpoint (POST, auth, scans, sends)
 - [ ] CORS scoped: never `Access-Control-Allow-Origin: *` on authenticated or mutation endpoints
