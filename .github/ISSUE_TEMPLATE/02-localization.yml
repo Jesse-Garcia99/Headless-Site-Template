@@ -1,0 +1,28 @@
+name: Localization update
+description: Add or refresh a locale without losing metadata, hreflang, or sitemap coverage.
+title: "[localization] "
+labels: [localization]
+body:
+  - type: input
+    id: locales
+    attributes:
+      label: Locales
+      placeholder: "es, fr, ja"
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source-string changes
+      description: List the source keys or routes that changed.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Completion checks
+      options:
+        - label: Source strings were updated in locales/en.json before translations.
+        - label: The Auto Translate workflow ran successfully or translations were reviewed manually.
+        - label: Localized titles, descriptions, canonicals, and the full hreflang cluster are present.
+        - label: Localized routes are included in the sitemap and pass the site audits.

@@ -44,6 +44,11 @@ The accompanying [agent operations guide](./docs/agent-operations.md) explains
 the one-time launch setup and the checks agents must perform when they add
 routes, change public content, or modify the Worker.
 
+Create sites with GitHub's **Use this template** action, not Fork. The new
+repository receives the issue forms and Actions workflows; its initialization
+workflow then creates every launch checklist item as a separate issue. Monthly
+human reviews recur only after the previous issue is closed.
+
 ### Agent discovery surface
 
 Set the `discovery` key in `src/content/site.json` to publish well-known

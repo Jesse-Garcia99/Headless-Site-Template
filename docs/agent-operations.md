@@ -4,13 +4,15 @@ Use this guide with `AGENTS.md`. It records the site capabilities that must surv
 
 ## First production launch
 
-On the initial build of a new site, file the launch checklist as GitHub issues and work them one at a time:
+Repositories created with **Use this template** inherit the issue forms and Actions files, not the template repository's existing issue instances. The default branch creation or first push runs `.github/workflows/launch-issues.yml`, which files every launch checklist item as its own GitHub issue. To backfill them locally, run:
 
 ```sh
 node scripts/create-launch-issues.mjs   # or: npm run launch:issues
 ```
 
-This requires the GitHub CLI (`gh auth login`). It creates one issue per checklist item — `launch` label, plus `human` for steps that need provider or DNS access — and skips titles that already exist, so it is safe to re-run. Point an agent at the issue list and have it work them sequentially; most items are proven by `npm run audit:seo` or `npm run audit:discovery` going green. The same checklist is available as the "Production launch checklist" issue template in `.github/ISSUE_TEMPLATE/` for manual use.
+The local command requires the GitHub CLI (`gh auth login`). Both paths create one issue per checklist item — `launch` label, plus `human` for steps that need provider or DNS access — and skip titles that already exist, so they are safe to re-run. Point an agent at the issue list and have it work them sequentially; most items are proven by `npm run audit:seo` or `npm run audit:discovery` going green.
+
+The issue chooser provides forms for ordinary site changes, localization work, and agent-readiness changes. `.github/workflows/recurring-issues.yml` also opens three monthly human-review issues and waits for each prior issue to close before renewing it. CI, dependency/security scans, localization, accessibility, and deployed agent-readiness checks remain automated rather than producing repetitive reminder issues.
 
 Complete these before the first public deployment:
 

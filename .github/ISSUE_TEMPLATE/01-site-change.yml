@@ -1,0 +1,29 @@
+name: Site change
+description: Track a content, route, design, or behavior change through production checks.
+title: "[site] "
+labels: [site]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Intended outcome
+      description: What should be different for visitors?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Routes and source files
+      description: List the affected public routes and source files.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Completion checks
+      options:
+        - label: Source content, metadata, structured data, and internal links are accurate.
+        - label: Sitemap and generated agent Markdown cover every changed indexable route.
+        - label: Build, typecheck, SEO, responsive, accessibility, and discovery audits pass.
+        - label: The deployed pages were checked at mobile and desktop sizes with a clean console.
+        - label: Localized source strings and translations were updated when applicable.

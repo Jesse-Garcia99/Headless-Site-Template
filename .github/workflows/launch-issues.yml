@@ -1,0 +1,24 @@
+name: Create Launch Issues
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  create:
+    if: github.event.repository.is_template != true && github.repository != 'Jesse-Garcia99/Headless-Site-Template' && vars.LAUNCH_ISSUES_ENABLED != 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: File missing launch issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: npm run launch:issues
