@@ -1,0 +1,27 @@
+name: Agent readiness change
+description: Track crawler, Markdown, structured-discovery, or agent-facing delivery work.
+title: "[agent-readiness] "
+labels: [agent-readiness]
+body:
+  - type: textarea
+    id: capability
+    attributes:
+      label: Real capability being exposed
+      description: Name the deployed page, API, agent, skill, MCP server, or browser action. Do not advertise placeholders.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Production evidence
+      description: Include the deployed URLs and expected response types.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Completion checks
+      options:
+        - label: robots.txt, sitemap.xml, Content-Signal, and Markdown negotiation remain correct.
+        - label: Every enabled discovery document points only to live, working capabilities.
+        - label: npm run audit:discovery and the deployed Agent Readiness workflow pass.
