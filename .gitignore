@@ -12,9 +12,13 @@ worker-configuration.d.ts
 tina/__generated__/
 public/admin/
 
-# Environment variables
+# Environment variables / local secrets
 .env.local
 .env
+.dev.vars
+*.pem
+*.p12
+credentials.json
 
 # OS
 .DS_Store
