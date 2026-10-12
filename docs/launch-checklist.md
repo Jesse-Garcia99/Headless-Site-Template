@@ -6,7 +6,7 @@ Each unchecked row becomes one GitHub issue in a repository created from this te
 
 - [x] `src/content/site.json` has the production HTTPS `siteUrl`, real `socialImage`, `favicon`, and brand details.
 - [x] Every public page has a unique title and meta description.
-- [ ] Every indexable page has a canonical URL, plus a complete hreflang set when localized.
+- [x] Every indexable page has a canonical URL, plus a complete hreflang set when localized.
 - [ ] Every page has exactly one descriptive `h1`.
 - [ ] Every inner page has visible breadcrumbs matching its BreadcrumbList JSON-LD.
 - [ ] Informative images have meaningful alt text and decorative images use deliberate empty alt text.
