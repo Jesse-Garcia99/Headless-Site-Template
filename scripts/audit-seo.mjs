@@ -100,4 +100,28 @@ if (site.localBusiness?.enabled && !htmlFiles.some(file => /LocalBusiness/.test(
   throw new Error("Local business schema is enabled but no LocalBusiness JSON-LD was found");
 }
 
+const localesDir = join(root, "locales");
+const localeCodes = existsSync(localesDir)
+  ? readdirSync(localesDir)
+      .filter((name) => name.endsWith(".json") && name !== "source-map.json")
+      .map((name) => name.slice(0, -5))
+      .sort()
+  : [];
+if (localeCodes.length > 1) {
+  const expectedLangs = [...localeCodes, "x-default"];
+  for (const file of htmlFiles) {
+    if (is404(file)) continue;
+    const html = readFileSync(file, "utf8");
+    const name = relative(output, file);
+    const langs = new Set(
+      [...html.matchAll(/<link\b[^>]*rel=["']alternate["'][^>]*>/gi)]
+        .map((tag) => tag[0].match(/\bhreflang=["']([^"']+)["']/i)?.[1])
+        .filter(Boolean),
+    );
+    for (const lang of expectedLangs) {
+      if (!langs.has(lang)) throw new Error(`${name} is missing hreflang "${lang}"`);
+    }
+  }
+}
+
 console.log(`SEO audit passed for ${htmlFiles.length} HTML files (${Math.round(jsBytes / 1024)} KB public JS).`);

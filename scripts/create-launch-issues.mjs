@@ -40,6 +40,12 @@ if (process.argv.includes("--dry-run")) {
 
 try { gh(["auth", "status"]); } catch { throw new Error("GitHub CLI authentication is required. Run `gh auth login` first."); }
 
+const repo = JSON.parse(gh(["repo", "view", "--json", "isTemplate,nameWithOwner"]));
+if (repo.isTemplate || repo.nameWithOwner === "Jesse-Garcia99/Headless-Site-Template") {
+  console.log("Skipping launch issues: this is the template repository. Cloned sites file them via .github/workflows/launch-issues.yml.");
+  process.exit(0);
+}
+
 for (const [label, color] of [
   ["launch", "0e8a16"],
   ["human", "d93f0b"],

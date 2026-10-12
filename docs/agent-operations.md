@@ -4,7 +4,7 @@ Use this guide with `AGENTS.md`. It records the site capabilities that must surv
 
 ## First production launch
 
-Repositories created with **Use this template** inherit the issue forms and Actions files, not the template repository's existing issue instances. The default branch creation or first push runs `.github/workflows/launch-issues.yml`, which files every launch checklist item as its own GitHub issue. To backfill them locally, run:
+Repositories created with **Use this template** inherit the issue forms and Actions files, not issue instances from this template repo. This template repository does not carry launch or recurring issues of its own; `npm run launch:issues` and `npm run recurring:issues` no-op here. The default branch creation or first push on a cloned site runs `.github/workflows/launch-issues.yml`, which files every launch checklist item as its own GitHub issue. To backfill them locally on a clone, run:
 
 ```sh
 node scripts/create-launch-issues.mjs   # or: npm run launch:issues

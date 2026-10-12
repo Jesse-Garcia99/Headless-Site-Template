@@ -35,6 +35,11 @@ function gh(args) {
 }
 
 gh(["auth", "status"]);
+const repo = JSON.parse(gh(["repo", "view", "--json", "isTemplate,nameWithOwner"]));
+if (repo.isTemplate || repo.nameWithOwner === "Jesse-Garcia99/Headless-Site-Template") {
+  console.log("Skipping recurring issues: this is the template repository. Cloned sites file them via .github/workflows/recurring-issues.yml.");
+  process.exit(0);
+}
 for (const [label, color] of [["recurring", "5319e7"], ["maintenance", "fbca04"]]) {
   try { gh(["label", "create", label, "--color", color, "--force"]); } catch {}
 }
