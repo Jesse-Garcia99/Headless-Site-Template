@@ -4,7 +4,7 @@ Each unchecked row becomes one GitHub issue in a repository created from this te
 
 ## Core site
 
-- [ ] `src/content/site.json` has the production HTTPS `siteUrl`, real `socialImage`, `favicon`, and brand details.
+- [x] `src/content/site.json` has the production HTTPS `siteUrl`, real `socialImage`, `favicon`, and brand details.
 - [ ] Every public page has a unique title and meta description.
 - [ ] Every indexable page has a canonical URL, plus a complete hreflang set when localized.
 - [ ] Every page has exactly one descriptive `h1`.
