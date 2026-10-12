@@ -35,3 +35,11 @@ graphify-out/
 **/hooks/impeccable.json
 .cursor/hooks.json
 .codex/hooks.json
+
+# Machine-local skill copies (SkillStore / solix skill add). Not part of the template.
+.agents/skills/
+.claude/skills/
+.codex/skills/
+.copilot/skills/
+.cursor/skills/
+.devin/skills/
