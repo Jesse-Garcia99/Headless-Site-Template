@@ -33,9 +33,23 @@ const securityHeaders: Record<string, string> = {
   "Content-Security-Policy": "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; img-src 'self' data:; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; upgrade-insecure-requests",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
   "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "SAMEORIGIN",
 };
+
+/** Paths that must never be served from the asset bundle (dotfiles, VCS, env, backups). */
+function isBlockedPublicPath(pathname: string): boolean {
+  const path = pathname.split("?")[0] ?? pathname;
+  if (path === "/.env" || path.startsWith("/.env.") || path === "/.dev.vars") return true;
+  if (path === "/.git" || path.startsWith("/.git/")) return true;
+  if (path === "/.wrangler" || path.startsWith("/.wrangler/")) return true;
+  if (path === "/wrangler.jsonc" || path === "/wrangler.toml" || path === "/package.json" || path === "/package-lock.json") return true;
+  if (path === "/tsconfig.json" || path === "/next.config.mjs" || path === "/next.config.js") return true;
+  if (/\.(bak|backup|old|orig|swp)$/i.test(path)) return true;
+  // Any other leading-dot segment in the path (e.g. /.github/, /.DS_Store)
+  return /(^|\/)\.[^/]+/.test(path) && !path.startsWith("/.well-known/");
+}
 
 const contentSignal = "ai-train=no, search=yes, ai-input=no";
 const markdownMediaType = /(?:^|,)\s*text\/markdown(?:\s*;[^,]*)?(?=,|$)/i;
@@ -68,7 +82,11 @@ function applyResponsePolicies(response: Response): Headers {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    if (url.pathname.startsWith("/__agent-markdown/")) return new Response("Not found", { status: 404 });
+    if (isBlockedPublicPath(url.pathname) || url.pathname.startsWith("/__agent-markdown/")) {
+      const headers = new Headers(securityHeaders);
+      headers.set("Content-Signal", contentSignal);
+      return new Response("Not found", { status: 404, headers });
+    }
 
     if (["GET", "HEAD"].includes(request.method) && acceptsMarkdown(request.headers.get("Accept") ?? "")) {
       url.pathname = markdownAssetPath(url.pathname) ?? url.pathname;
