@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const repository = "https://github.com/mojavestudio/AISite";
 const skillSource = `${repository}/blob/main/skills/create-site/SKILL.md`;
@@ -16,7 +17,7 @@ export default function SkillsPage() {
     <a className="skip-link" href="#main-content">Skip to content</a>
     <header className="site-header shell compact-header"><Link className="wordmark" href="/">headless<span>.</span></Link><nav aria-label="Primary navigation"><Link href="/guide/">Guide</Link><Link href="/skills/">Skills</Link><a href={repository}>GitHub</a></nav></header>
     <main id="main-content" className="inner-page shell">
-      <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">/</span><span>Skills</span></nav>
+      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Skills", path: "/skills/" }]} />
       <h1>Skills that make a better first draft.</h1>
       <p className="page-intro">The skills live in the public <a href={repository}>AISite repository</a>. This page explains how to hand one to an agent without creating a second, stale copy.</p>
       <article className="skill-page-card">

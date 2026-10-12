@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import TinaForm from "@/components/TinaForm";
 
 const formsDir = path.join(process.cwd(), "src", "content", "forms");
@@ -50,7 +51,7 @@ export default async function FormPage({
     <>
     <a className="skip-link" href="#main-content">Skip to content</a>
     <main id="main-content" style={{ maxWidth: "640px", margin: "0 auto", padding: "2rem" }}>
-      <nav className="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>{form.title}</span></nav>
+      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: form.title, path: `/forms/${slug}/` }]} />
       <h1>{form.title}</h1>
       {form.description && <p>{form.description}</p>}
       <TinaForm form={form} />

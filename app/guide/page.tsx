@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Publishing guide",
@@ -77,7 +78,7 @@ export default function GuidePage() {
       <nav aria-label="Primary navigation"><Link href="/guide/">Guide</Link><Link href="/skills/">Skills</Link><a href="https://github.com/mojavestudio/AISite">GitHub</a></nav>
     </header>
     <main id="main-content" className="inner-page shell">
-      <nav className="breadcrumbs" aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">/</span><span>Guide</span></nav>
+      <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Guide", path: "/guide/" }]} />
       <h1>How to vibe code a site without shipping a mess.</h1>
       <p className="page-intro">Use the agent for speed. Use a clear standard for everything the first draft skips.</p>
       <ol className="guide-list">{checks.map(([title, body], index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><div><h2>{title}</h2><p>{body}</p></div></li>)}</ol>

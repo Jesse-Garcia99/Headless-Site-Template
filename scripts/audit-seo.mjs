@@ -64,6 +64,9 @@ for (const file of htmlFiles) {
   if (!isHome(file) && !is404(file) && !/aria-label="Breadcrumb"/i.test(html)) {
     throw new Error(`${name} is missing breadcrumbs`);
   }
+  if (!isHome(file) && !is404(file) && !/"@type":"BreadcrumbList"/.test(html)) {
+    throw new Error(`${name} is missing BreadcrumbList JSON-LD`);
+  }
   if (!is404(file) && !/<script type="application\/ld\+json">/i.test(html)) {
     throw new Error(`${name} is missing structured data`);
   }

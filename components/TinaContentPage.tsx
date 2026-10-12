@@ -1,6 +1,7 @@
 "use client";
 
 import { tinaField, useTina } from "tinacms/dist/react";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 type ContentRecord = Record<string, unknown>;
 
@@ -56,7 +57,7 @@ export default function TinaContentPage(props: { data: unknown; variables: unkno
   return <>
     <a className="skip-link" href="#main-content">Skip to content</a>
     <main id="main-content">
-    <nav className="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>{string(page.title)}</span></nav>
+    <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: string(page.title), path: `/${string(page.slug)}/` }]} />
     <header>
       <p>{string(hero.kicker)}</p>
       <h1 data-tina-field={tinaField(page, "title")}>{string(hero.title) || string(page.title)}</h1>

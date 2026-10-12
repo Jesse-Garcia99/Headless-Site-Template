@@ -8,7 +8,7 @@ Each unchecked row becomes one GitHub issue in a repository created from this te
 - [x] Every public page has a unique title and meta description.
 - [x] Every indexable page has a canonical URL, plus a complete hreflang set when localized.
 - [ ] Every page has exactly one descriptive `h1`.
-- [ ] Every inner page has visible breadcrumbs matching its BreadcrumbList JSON-LD.
+- [x] Every inner page has visible breadcrumbs matching its BreadcrumbList JSON-LD.
 - [ ] Informative images have meaningful alt text and decorative images use deliberate empty alt text.
 - [ ] Unknown URLs render a real HTML 404 with a way home.
 - [ ] `robots.txt` declares crawl rules, the sitemap, explicit AI-crawler groups, and the Content-Signal policy.

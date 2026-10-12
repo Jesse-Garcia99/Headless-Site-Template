@@ -6,6 +6,22 @@ export function absoluteUrl(path = "/") {
   return new URL(path, siteUrl).toString();
 }
 
+export type BreadcrumbItem = { name: string; path?: string };
+
+/** BreadcrumbList JSON-LD that mirrors the visible trail (Home → … → current). */
+export function breadcrumbJsonLd(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      ...(item.path ? { item: absoluteUrl(item.path) } : {}),
+    })),
+  };
+}
+
 export function localBusinessJsonLd() {
   const business = site.localBusiness;
   if (!business?.enabled) return null;
