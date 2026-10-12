@@ -5,6 +5,7 @@ const issues = [
   ["Search visibility review", "Review Search Console indexing, sitemap coverage, canonical reports, search queries, and generative-AI visibility. Record changes worth making; do not create filler pages for keyword variants."],
   ["Content and localization freshness", "Review public copy, screenshots, prices, downloads, policy text, and supported locales. Update source strings first, run the localization workflow, then verify hreflang and sitemap coverage."],
   ["Production crawler and accessibility spot check", "Check the deployed site in a browser and verify robots.txt, sitemap.xml, response headers, Markdown negotiation, structured data, keyboard use, responsive layouts, and a clean console."],
+  ["Agent discovery honesty", "Re-scan the production URL with POST https://isitagentready.com/api/scan. Keep robots.txt AI crawler groups, Content-Signal, sitemap.xml, Link headers, and every enabled well-known document true. Disable anything that 404s or overclaims. Close not-planned items that still do not apply. Do not add fake A2A, MCP, OAuth, or commerce documents to chase a scanner score."],
 ];
 
 const dryRun = process.argv.includes("--dry-run");

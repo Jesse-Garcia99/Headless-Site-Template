@@ -17,7 +17,12 @@ for (const line of checklist.split("\n")) {
     .replace(/[`*]/g, "")
     .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
     .slice(0, 180);
-  issues.push({ title, body, human: section.startsWith("Human") });
+  const labels = ["launch"];
+  if (section.startsWith("Human")) labels.push("human");
+  if (section.startsWith("Agent readiness") || section.startsWith("Agent tooling")) labels.push("agent-readiness");
+  if (section.startsWith("Localization")) labels.push("localization");
+  if (/^(Core site|Policy|Security|CI)/.test(section)) labels.push("site");
+  issues.push({ title, body, labels });
 }
 
 assert(issues.length > 0, "Launch checklist has no unchecked items.");
@@ -58,9 +63,8 @@ for (const issue of issues) {
   gh([
     "issue", "create",
     "--title", title,
-    "--body", `${issue.body}\n\n_Automated from docs/launch-checklist.md. Complete this item, record evidence, then close it._`,
-    "--label", "launch",
-    ...(issue.human ? ["--label", "human"] : []),
+    "--body", `${issue.body}\n\n_Automated from docs/launch-checklist.md. Complete this item, record evidence, then close it._${issue.labels.includes("agent-readiness") ? " If this site has no such capability, close as **not planned** with evidence. Do not publish a fake document to pass a scanner. Monthly *Agent discovery honesty* keeps shipped items true." : ""}`,
+    ...issue.labels.flatMap((label) => ["--label", label]),
   ]);
   created++;
 }

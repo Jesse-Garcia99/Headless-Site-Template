@@ -49,9 +49,11 @@ const agentChecks = [
   ["Link response headers", "The homepage returns RFC 8288 Link headers (api-catalog, service-desc, service-doc, describedby) when discovery documents exist."],
   ["API catalog + OpenAPI", "Publish /.well-known/api-catalog (RFC 9727, application/linkset+json) and /openapi.json only when real API endpoints exist."],
   ["auth.md + protected resource", "Publish /auth.md and /.well-known/oauth-protected-resource (RFC 9728) only when agent registration or auth actually exists."],
+  ["OAuth/OIDC discovery", "Publish /.well-known/oauth-authorization-server or openid-configuration only with a live issuer."],
   ["A2A agent card + skills index", "Publish /.well-known/agent-card.json and /.well-known/agent-skills/index.json (with sha256 digests) only when the site can act as an agent."],
   ["MCP server card", "Publish /.well-known/mcp/server-card.json only when a real MCP endpoint is deployed and reachable."],
   ["WebMCP tools", "Register navigator.modelContext tools only for actions the page can actually perform."],
+  ["Web Bot Auth", "Publish JWKS and sign outbound bot requests only if this site originates agent HTTP."],
   ["DNS-AID records", "SVCB/HTTPS records under _agents — a human DNS step, only once agent endpoints are live."],
   ["Commerce protocols", "ACP, UCP, MPP (x-payment-info), x402, AP2 — only for real payment flows, never to satisfy a scanner."],
 ];

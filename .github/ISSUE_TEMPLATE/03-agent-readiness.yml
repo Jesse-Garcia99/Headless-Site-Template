@@ -22,6 +22,6 @@ body:
     attributes:
       label: Completion checks
       options:
-        - label: robots.txt, sitemap.xml, Content-Signal, and Markdown negotiation remain correct.
-        - label: Every enabled discovery document points only to live, working capabilities.
-        - label: npm run audit:discovery and the deployed Agent Readiness workflow pass.
+        - label: robots.txt AI crawler groups, Content-Signal, sitemap.xml, and Markdown negotiation remain correct.
+        - label: Link headers and every enabled discovery document (api-catalog, auth.md, A2A, skills, MCP, OAuth, commerce) point only to live capabilities.
+        - label: npm run audit:discovery and POST https://isitagentready.com/api/scan pass for the checks this change enables.

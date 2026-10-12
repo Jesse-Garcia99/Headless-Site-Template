@@ -10,7 +10,7 @@ Repositories created with **Use this template** inherit the issue forms and Acti
 node scripts/create-launch-issues.mjs   # or: npm run launch:issues
 ```
 
-The local command requires the GitHub CLI (`gh auth login`). Both paths create one issue per checklist item — `launch` label, plus `human` for steps that need provider or DNS access — and skip titles that already exist, so they are safe to re-run. Point an agent at the issue list and have it work them sequentially; most items are proven by `npm run audit:seo` or `npm run audit:discovery` going green.
+The local command requires the GitHub CLI (`gh auth login`). Both paths create one issue per checklist item — `launch` plus `site`, `agent-readiness`, `localization`, or `human` by section — and skip titles that already exist, so they are safe to re-run. Point an agent at the issue list and have it work them sequentially. Agent-readiness items that do not apply (no API, no MCP, no checkout) should be closed as not planned with evidence, never faked. Most items are proven by `npm run audit:seo` or `npm run audit:discovery` going green. Monthly *Agent discovery honesty* issues keep robots, sitemap, Link headers, and enabled well-known documents true after launch.
 
 The issue chooser provides forms for ordinary site changes, localization work, and agent-readiness changes. `.github/workflows/recurring-issues.yml` also opens three monthly human-review issues and waits for each prior issue to close before renewing it. CI, dependency/security scans, localization, accessibility, and deployed agent-readiness checks remain automated rather than producing repetitive reminder issues.
 
