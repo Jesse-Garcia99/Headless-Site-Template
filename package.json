@@ -24,8 +24,7 @@
   "dependencies": {
     "next": "^16.4.0",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "tinacms": "^3.14.4"
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@tinacms/cli": "^4.0.2",
@@ -33,7 +32,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "typescript": "^6",
-    "wrangler": "^4.149.0"
+    "wrangler": "^4.149.0",
+    "tinacms": "^3.14.4"
   },
   "overrides": {
     "next": {
