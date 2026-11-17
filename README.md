@@ -295,3 +295,7 @@ The Worker may have been deployed before the static export completed.
 - [Tina tinaField](https://tina.io/docs/contextual-editing/tinafield)
 - [Cloudflare Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/)
 - [Next.js Static Export](https://nextjs.org/docs/app/building-your-application/deploying/static-exports)
+
+## License
+
+[MIT](./LICENSE) — use this template for any site, commercial or not, with no attribution required.
