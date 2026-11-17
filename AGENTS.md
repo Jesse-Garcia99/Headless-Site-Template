@@ -20,16 +20,3 @@ Every agent changing this site must leave its affected pages more complete than 
 Read [docs/agent-operations.md](docs/agent-operations.md) before launch work, deployment changes, or adding routes. It separates one-time launch setup from recurring change requirements.
 
 Deployment tasks still require a human with provider access: attach the custom domain, set the production `SITE_URL`, submit the generated sitemap in Search Console, and resolve provider-reported indexing or DNS errors.
-
-## Workspace standards
-
-- Comments: follow the code-comment-writer skill (<https://skills.rest/skill/code-comment-writer>). Why over what, minimal, no commented-out code.
-- UI/design work: use design-taste-frontend, gpt-taste, impeccable (<https://www.tasteskill.dev/>).
-- Always use graphify for codebase questions (`graphify query "<q>"` before raw browsing); `graphify update .` after code changes.
-- Long-form docs live in the Obsidian vault (`~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/<project-folder>/`); code keeps a one-line pointer. Extend an existing related note; group docs by feature, never a doc per issue.
-- Never place files directly in `~/developer` or `~/developer/Code`; everything goes inside a project folder.
-
-## Delegation
-
-- Offload simple, self-contained work (searches, file lookups, mechanical edits, single-file checks) to subagents; keep the hard reasoning in the main thread.
-- Run independent work in parallel: batch independent tool calls in one block, and spawn multiple subagents at once instead of sequentially.
