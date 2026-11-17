@@ -4,7 +4,7 @@ A public-ready **Next.js + TinaCMS** starter, deployed as static assets through 
 
 ## What this template includes
 
-- Next.js 15 with App Router
+- Next.js 16 with App Router
 - TinaCMS for content management
 - Visual editing (click-to-edit on the live site)
 - Static HTML export (`output: "export"`)

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const createSiteSkill = "https://github.com/mojavestudio/AISite/blob/main/skills/create-site/SKILL.md";
 const aiSiteRepository = "https://github.com/mojavestudio/AISite";
-const templateRepository = "https://github.com/mojavestudio/Headless-Site-Template";
+const templateRepository = "https://github.com/Jesse-Garcia99/Headless-Site-Template";
 
 function Arrow() {
   return <span className="arrow" aria-hidden="true">↗</span>;
